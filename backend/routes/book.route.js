@@ -1,23 +1,12 @@
 import express from "express";
-import Book from "../models/book.model.js"
+import { deleteBook, getBook, getSingleBook, newBook, updateBook } from "../controller/book.controller.js";
+
 const router = express.Router();
 
-
- router.post("/",async(req,res)=>{
-    const book = req.body
-    if(!book.title || !book.author || !book.price || !book.cover){
-        return res.status(400).json({success:false,message:"Please provide all fields"});
-    }
-
-    const newBook = new Book(book)
-
-    try{
-      await newBook.save();
-      res.status(201).json({success:true , data: newBook})
-    } catch(error){
-      console.log("error in creating :",error.message)
-      res.status(500).json({success:false,message:"server error"})
-    }
-})
-
-export default router
+router.post("/", newBook );
+router.get("/" , getBook);
+router.get("/:id" , getSingleBook);
+router.put("/:id" , updateBook);
+router.delete("/:id",deleteBook);
+ 
+export default router;
